@@ -3,6 +3,7 @@ export interface Player {
     Civilization: string
     CivilizationShortDescription: string
     LeaderName: string
+    LeaderType: string
 }
 
 export interface Moment {
