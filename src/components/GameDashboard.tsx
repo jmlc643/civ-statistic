@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useCivData } from "../hooks/useCivData"
+import { CivTimeline } from "./CivTimeline"
 
 interface Props {
     filename: string
@@ -51,7 +52,7 @@ export const GameDashboard = ({ filename }: Props) => {
           {opponents.map(opp => (
             <div key={opp.Id} style={{ textAlign: 'center', background: '#2a2a2a', padding: '1rem', borderRadius: '8px' }}>
               <img 
-                src={`/leaders/${opp.LeaderName}.webp`} 
+                src={`/assets/leaders/${opp.LeaderName}.webp`} 
                 alt={opp.LeaderName} 
                 style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '50%', marginBottom: '0.5rem', backgroundColor: '#444' }}
                 onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/80?text=?'; }}
@@ -65,14 +66,7 @@ export const GameDashboard = ({ filename }: Props) => {
 
       <hr style={{ borderColor: '#444' }} />
 
-      <h3>Últimos 5 Momentos Históricos</h3>
-      <ul>
-        {data.Moments.slice(-5).map((moment) => (
-          <li key={moment.Id} style={{ marginBottom: '0.5rem' }}>
-            <strong>Turno {moment.Turn} ({moment.GameEra}):</strong> {moment.InstanceDescription}
-          </li>
-        ))}
-      </ul>
+      <CivTimeline moments={data.Moments} />
     </div>
   );
 }
