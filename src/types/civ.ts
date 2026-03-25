@@ -13,6 +13,7 @@ export interface Moment {
     GameEra: string
     EraScore: number
     InstanceDescription: string
+    ActingPlayer: number
 }
 
 export interface CivGameData {
