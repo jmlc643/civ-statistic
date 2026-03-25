@@ -1,0 +1,16 @@
+.civ-timeline-grid::-webkit-scrollbar {
+  height: 8px;
+  background-color: #111;
+  border-radius: 4px;
+}
+
+.civ-timeline-grid::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #b8860b, #e5b80b, #b8860b);
+  border-radius: 4px;
+}
+
+.civ-timeline-grid::-webkit-scrollbar-track {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+}

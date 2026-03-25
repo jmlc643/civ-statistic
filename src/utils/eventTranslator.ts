@@ -1,76 +1,124 @@
 import type { Moment } from "../types/civ";
 
-export const eventDictionary: Record<string, { label: string; icon: string }> = {
-  // --- FUNDACIÓN Y EXPLORACIÓN ---
-  MOMENT_CITY_BUILT_ON_DESERT: { label: "Ciudad fundada en el implacable desierto.", icon: "MOMENT_CITY_BUILT_ON_DESERT.webp" },
-  MOMENT_CITY_BUILT_ON_TUNDRA: { label: "Ciudad fundada en la gélida tundra.", icon: "MOMENT_CITY_BUILT_ON_TUNDRA.webp" },
-  MOMENT_CITY_BUILT_NEW_CONTINENT: { label: "Primera ciudad en un nuevo continente.", icon: "MOMENT_CITY_BUILT_NEW_CONTINENT.webp" },
-  MOMENT_GOODY_HUT_TRIGGERED: { label: "Los aldeanos de una tribu nos han entregado regalos.", icon: "MOMENT_GOODY_HUT_TRIGGERED.webp" },
-  MOMENT_FIND_NATURAL_WONDER_FIRST_IN_WORLD: { label: "¡Primeros en el mundo en descubrir esta Maravilla Natural!", icon: "MOMENT_FIND_NATURAL_WONDER_FIRST_IN_WORLD.webp" },
-  MOMENT_FIND_NATURAL_WONDER: { label: "Hemos descubierto una Maravilla Natural.", icon: "MOMENT_FIND_NATURAL_WONDER.webp" },
-  MOMENT_WORLD_CIRCUMNAVIGATED_FIRST_IN_WORLD: { label: "¡Nuestra civilización fue la primera en dar la vuelta al mundo!", icon: "MOMENT_WORLD_CIRCUMNAVIGATED.webp" }, // Ojo: a veces comparten el mismo icono
-  
-  // --- COMBATE Y GUERRA ---
-  MOMENT_BARBARIAN_CAMP_DESTROYED: { label: "Campamento bárbaro dispersado.", icon: "MOMENT_BARBARIAN_CAMP_DESTROYED.webp" },
-  MOMENT_BARBARIAN_CAMP_DESTROYED_NEAR_YOUR_CITY: { label: "Amenaza bárbara eliminada cerca de nuestra ciudad.", icon: "MOMENT_BARBARIAN_CAMP_DESTROYED.webp" },
-  MOMENT_CITY_TRANSFERRED_FOREIGN_CAPITAL: { label: "¡Hemos capturado la capital de otra civilización!", icon: "MOMENT_CITY_TRANSFERRED_FOREIGN_CAPITAL.webp" },
-  MOMENT_CITY_TRANSFERRED_PLAYER_DEFEATED: { label: "Una civilización entera ha caído ante nosotros.", icon: "MOMENT_CITY_TRANSFERRED_PLAYER_DEFEATED.webp" },
-  MOMENT_UNIT_KILLED_UNDERDOG_PROMOTIONS: { label: "Nuestra unidad veterana venció a un enemigo más fuerte.", icon: "MOMENT_UNIT_KILLED_UNDERDOG_PROMOTIONS.webp" },
-  MOMENT_WAR_DECLARED_USING_CASUS_BELLI: { label: "Guerra declarada de forma justificada (Casus Belli).", icon: "MOMENT_WAR_DECLARED_USING_CASUS_BELLI.webp" },
-
-  // --- RELIGIÓN Y CULTURA ---
-  MOMENT_PANTHEON_FOUNDED_FIRST_IN_WORLD: { label: "¡Primer Panteón fundado en el mundo!", icon: "MOMENT_PANTHEON_FOUNDED.webp" },
-  MOMENT_RELIGION_FOUNDED: { label: "Un Gran Profeta ha fundado nuestra Religión.", icon: "MOMENT_RELIGION_FOUNDED.webp" },
-  MOMENT_INQUISITION_LAUNCHED: { label: "Ha comenzado la Inquisición de nuestra religión.", icon: "MOMENT_INQUISITION_LAUNCHED.webp" },
-
-  // --- DESARROLLO Y CIENCIA ---
-  MOMENT_BUILDING_CONSTRUCTED_GAME_ERA_WONDER: { label: "¡Maravilla del Mundo completada!", icon: "MOMENT_BUILDING_CONSTRUCTED_GAME_ERA_WONDER.webp" },
-  MOMENT_UNIT_CREATED_FIRST_UNIQUE: { label: "Hemos entrenado a nuestra Unidad Única por primera vez.", icon: "MOMENT_UNIT_CREATED_FIRST_UNIQUE.webp" },
-  MOMENT_PROJECT_FOUNDED_SATELLITE_LAUNCH_FIRST_IN_WORLD: { label: "¡Primer satélite lanzado al espacio en el mundo!", icon: "MOMENT_PROJECT_FOUNDED_SATELLITE_LAUNCH_FIRST_IN_WORLD.webp" },
-
-  // --- DIPLOMACIA Y POLÍTICA ---
-  MOMENT_DEAL_MADE_FIRST_IN_WORLD: { label: "¡Primer acuerdo diplomático firmado en el mundo!", icon: "MOMENT_DEAL_MADE_FIRST_IN_WORLD.webp" },
-  MOMENT_ALLIANCE_FORMED_FIRST_IN_WORLD: { label: "¡Primera alianza formada en el mundo!", icon: "MOMENT_ALLIANCE_FORMED_FIRST_IN_WORLD.webp" },
-  MOMENT_DEAL_BROKEN: { label: "Un acuerdo diplomático ha sido roto.", icon: "MOMENT_DEAL_BROKEN.webp" },
-  MOMENT_GOVERNOR_ALL_APPOINTED_FIRST: { label: "¡Nuestro gobernador ha sido el primero en ser nombrado en el mundo!", icon: "MOMENT_GOVERNOR_ALL_APPOINTED_FIRST.webp" },
+export const getEraColor = (era: string): string => {
+  switch (era) {
+    case "ERA_ANCIENT": return "#e76f51";
+    case "ERA_CLASSICAL": return "#f4a261";
+    case "ERA_MEDIEVAL": return "#e9c46a";
+    case "ERA_RENAISSANCE": return "#2a9d8f";
+    case "ERA_INDUSTRIAL": return "#264653";
+    case "ERA_MODERN": return "#457b9d";
+    case "ERA_ATOMIC": return "#1d3557";
+    case "ERA_INFORMATION": return "#8338ec";
+    case "ERA_FUTURE": return "#3a0ca3";
+    default: return "#c0c0c0";
+  }
 };
 
-const governorNames = ["Victor", "Amani", "Magnus", "Liang", "Pingala", "Moksha", "Reyna"];
+const translations: Record<string, string> = {
+  MOMENT_BARBARIAN_CAMP_DESTROYED: "Campamento Bárbaro Destruido",
+  MOMENT_CITY_FOUNDED: "Ciudad Fundada",
+  MOMENT_DEDICATION_TRIGGERED: "Dedicación Activada",
+  MOMENT_PANTHEON_FOUNDED: "Panteón Fundado",
+  MOMENT_RELIGION_FOUNDED: "Religión Fundada",
+  MOMENT_IMPROVEMENT_CONSTRUCTED: "Mejora Construida",
+  MOMENT_UNIT_BATTLE_PROMOTED: "Unidad Promovida (Combate)",
+  MOMENT_WORLD_WONDER_COMPLETED: "Maravilla del Mundo Completada",
+  MOMENT_EMPIRE_WORLD_WONDER_COMPLETED: "Maravilla del Mundo Completada",
+  MOMENT_ARTIFACT_EXTRACTED: "Artefacto Extraído",
+  MOMENT_BUILDING_CONSTRUCTED: "Edificio Construido",
+  MOMENT_ALL_GOVERNORS_RECRUITED: "Todos los Gobernadores Reclutados",
+  MOMENT_ALL_GOVERNOR_PROMOTIONS: "Promoción de Gobernador",
+  MOMENT_DISTRICT_CONSTRUCTED: "Distrito Construido",
+  MOMENT_FIRST_CIRCUMNAVIGATION: "Primera Circunnavegación del Mundo",  
+  MOMENT_EMPIRE_DISTRICT_CONSTRUCTED: "Distrito del Imperio Construido",
+  MOMENT_CITY_TRANSFERRED: "Ciudad Transferida",
+  MOMENT_BATTLE_FOUGHT: "Batalla Librada",
+  MOMENT_LEADER_MET: "Líder Encontrado",
+  MOMENT_GREAT_PERSON_CREATED: "Gran Personaje Reclutado",
+  MOMENT_MAX_LEVEL_GOVERNOR: "Gobernador a Nivel Máximo",
+  MOMENT_NATIONAL_PARK_FOUNDED: "Parque Nacional Fundado",
+  MOMENT_CITY_STATE_ENVOY: "Primer Enviado a Ciudad-Estado",
+  MOMENT_TRADING_POST_CONSTRUCTED: "Puesto Comercial Construido",
+  MOMENT_TECH_RESEARCHED: "Tecnología Investigada",
+  MOMENT_CIVIC_RESEARCHED: "Principios Cívicos Investigados",
+  MOMENT_BARBARIAN_CLAN_DISPERSED: "Clan Bárbaro Dispersado",
+  MOMENT_GOVERNMENT_TIER_1: "Gobierno Tier 1",
+  MOMENT_GOVERNMENT_TIER_2: "Gobierno Tier 2",
+  MOMENT_GOVERNMENT_TIER_3: "Gobierno Tier 3",
+  MOMENT_CORPS_FORMED: "Cuerpo de Ejército Formado",
+  MOMENT_ARMY_FORMED: "Ejército Formado",
+  MOMENT_ARMADA_FORMED: "Armada Formada",
+  MOMENT_FLEET_FORMED: "Flota Formada",
+  MOMENT_SUZERAIN_CITY_STATE: "Suzerano de Ciudad-Estado",
+  MOMENT_SPY_MISSION_SUCCESS: "Misión de Espionaje Exitosa",
+  MOMENT_SECRET_SOCIETY_FOUNDED: "Sociedad Secreta Fundada",
+  MOMENT_CORPORATION_FOUNDED: "Corporación Fundada",
+  MOMENT_HERO_CLAIMED: "Héroe Reclamado"
+};
 
-export const translateEvent = (moment: Moment) => {
-  const eventType = moment.Type;
-  let translation = eventDictionary[eventType];
-  
-  if (eventType === "MOMENT_GOVERNOR_FULLY_PROMOTED_FIRST" || eventType === "MOMENT_GOVERNOR_FULLY_PROMOTED") {
-    // Buscar el nombre del gobernador en la descripción
-    const governor = governorNames.find(g => moment.InstanceDescription?.includes(g));
-    if (governor) {
-      return {
-        label: `Primer gobernador completamente promovido (${governor})`,
-        icon: `MOMENT_GOVERNOR_FULLY_PROMOTED_FIRST_${governor}.webp`
-      };
+export const translateEvent = (moment: Moment): { label: string; icon: string } => {
+  const customRules = [
+    {
+      condition: (m: Moment) => m.Type === "MOMENT_ALL_GOVERNOR_PROMOTIONS" && m.InstanceDescription.includes("REYNA"),
+      label: `Ascenso: Reyna la Financiera`,
+      icon: `MOMENT_ALL_GOVERNOR_PROMOTIONS.webp`
+    },
+    {
+      condition: (m: Moment) => m.Type === "MOMENT_ALL_GOVERNOR_PROMOTIONS" && m.InstanceDescription.includes("LIANG"),
+      label: `Ascenso: Liang la Agrimensora`,
+      icon: `MOMENT_ALL_GOVERNOR_PROMOTIONS.webp`
+    },
+    {
+      condition: (m: Moment) => m.Type === "MOMENT_ALL_GOVERNOR_PROMOTIONS" && m.InstanceDescription.includes("VICTOR"),
+      label: `Ascenso: Víctor el Castellano`,
+      icon: `MOMENT_ALL_GOVERNOR_PROMOTIONS.webp`
+    },
+    {
+      condition: (m: Moment) => m.Type === "MOMENT_ALL_GOVERNOR_PROMOTIONS" && m.InstanceDescription.includes("MAGNUS"),
+      label: `Ascenso: Magnus el Senescal`,
+      icon: `MOMENT_ALL_GOVERNOR_PROMOTIONS.webp`
+    },
+    {
+      condition: (m: Moment) => m.Type === "MOMENT_ALL_GOVERNOR_PROMOTIONS" && m.InstanceDescription.includes("MOKSHA"),
+      label: `Ascenso: Moksha el Cardenal`,
+      icon: `MOMENT_ALL_GOVERNOR_PROMOTIONS.webp`
+    },
+    {
+       condition: (m: Moment) => m.Type === "MOMENT_ALL_GOVERNOR_PROMOTIONS" && m.InstanceDescription.includes("PINGALA"),
+       label: `Ascenso: Pingala el Educador`,
+       icon: `MOMENT_ALL_GOVERNOR_PROMOTIONS.webp`
+    },
+    {
+      condition: (m: Moment) => m.Type === "MOMENT_ALL_GOVERNOR_PROMOTIONS" && m.InstanceDescription.includes("AMANI"),
+      label: `Ascenso: Amani la Emisaria`,
+      icon: `MOMENT_ALL_GOVERNOR_PROMOTIONS.webp`
     }
+  ];
+
+  for (const rule of customRules) {
+     if (rule.condition(moment)) {
+         return { label: rule.label, icon: rule.icon };
+     }
   }
 
-  if (translation) return translation;
+  // Base translation
+  const baseTranslation = translations[moment.Type] || moment.Type.replace("MOMENT_", "").replace(/_/g, " ");
 
+  // Some moments require the InstanceDescription for clarity (e.g., wonders, religions)
+  let finalLabel = baseTranslation;
+  if (moment.InstanceDescription && 
+      (moment.Type.includes("WONDER") || 
+       moment.Type.includes("RELIGION") || 
+       moment.Type.includes("PANTHEON") ||
+       moment.Type.includes("DISTRICT"))) {
+    finalLabel += `: ${moment.InstanceDescription}`;
+  } else if (moment.InstanceDescription && moment.Type === "MOMENT_CITY_FOUNDED") {
+    finalLabel = `Ciudad Fundada: ${moment.InstanceDescription}`;
+  }
+  
   return {
-    label: eventType.replace("MOMENT_", "").replace(/_/g, " ").toLowerCase(),
-    icon: eventType + ".webp", 
+    label: finalLabel,
+    icon: `${moment.Type}.webp`
   };
-};
-
-export const getEraColor = (era: string): string => {
-  const eraColors: { [key: string]: string } = {
-    ERA_ANCIENT: "#8b5e3c", // Sepia/Marrón
-    ERA_CLASSICAL: "#4a90e2", // Azul
-    ERA_MEDIEVAL: "#50e3c2", // Turquesa
-    ERA_RENAISSANCE: "#f5a623", // Naranja
-    ERA_INDUSTRIAL: "#9b9b9b", // Gris
-    ERA_MODERN: "#b8e986", // Verde lima
-    ERA_ATOMIC: "#d0021b", // Rojo
-    ERA_INFORMATION: "#bd10e0", // Morado
-    ERA_FUTURE: "#417505", // Verde oscuro
-  };
-  return eraColors[era] || "#fff";
 };
