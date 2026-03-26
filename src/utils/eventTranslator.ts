@@ -102,10 +102,8 @@ export const translateEvent = (moment: Moment): { label: string; icon: string } 
      }
   }
 
-  // Base translation
   const baseTranslation = translations[moment.Type] || moment.Type.replace("MOMENT_", "").replace(/_/g, " ");
 
-  // Some moments require the InstanceDescription for clarity (e.g., wonders, religions)
   let finalLabel = baseTranslation;
   if (moment.InstanceDescription && 
       (moment.Type.includes("WONDER") || 

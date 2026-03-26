@@ -20,13 +20,12 @@ export const CivTimeline = ({ moments }: Props) => {
     const { label, icon } = translateEvent(moment);
     const eraColor = getEraColor(moment.GameEra);
 
-    // Check if it is a major moment like golden age, etc. based on EraScore
     const isMajor = moment.EraScore >= 3;
 
     return (
       <div style={{ ...styleProps, padding: "0 16px" }} className="group">
         <div className="relative h-full flex flex-col items-center justify-between p-2 box-border">
-          {/* Timeline connecting line */}
+          {/* Línea de conexión de la línea de tiempo */}
           <div
             className="absolute top-[40%] left-0 w-full h-1 -z-10 group-hover:h-1.5 transition-all duration-300 shadow-sm"
             style={{
@@ -44,7 +43,7 @@ export const CivTimeline = ({ moments }: Props) => {
               boxShadow: `inset 0 0 20px ${eraColor}20, 0 8px 16px -4px rgba(0,0,0,0.6)`
             }}
           >
-            {/* Top half with icon and background */}
+            {/* Mitad superior con icono y fondo */}
             <div className="w-full relative grow-[0.4] flex flex-col items-center justify-center pt-4 pb-2" style={{ backgroundColor: `${eraColor}05` }}>
               <div className="absolute top-2 w-full px-3 flex justify-between items-start z-20">
                 <span className="text-[10px] font-bold px-2 py-0.5 bg-black/60 rounded border border-gray-700 font-mono text-gray-300 backdrop-blur-sm">
@@ -58,7 +57,7 @@ export const CivTimeline = ({ moments }: Props) => {
                 </span>
               </div>
               
-              {/* Icon */}
+              {/* Iconos */}
               <div className={`relative ${isMajor ? "p-1.5" : "p-1"} rounded-full bg-gray-950 flex items-center justify-center mt-3 z-10 shadow-2xl`}
                    style={{ border: `2px solid ${eraColor}` }}>
                 <img
@@ -71,7 +70,7 @@ export const CivTimeline = ({ moments }: Props) => {
               </div>
             </div>
             
-            {/* Bottom half with text */}
+            {/* Mitad inferior con texto */}
             <div className="w-full grow-[0.6] flex flex-col items-center justify-start p-4 bg-gray-950/40 relative">
               <div className="absolute top-0 left-0 w-full h-px" style={{
                 background: `linear-gradient(90deg, transparent, ${eraColor}50, transparent)`
@@ -81,7 +80,7 @@ export const CivTimeline = ({ moments }: Props) => {
                 {label}
               </p>
 
-              {/* Base type subtitle */}
+              {/* Subtítulo del tipo base */}
               <div className="h-6 w-full flex items-center justify-center">
                   <p className="text-[9px] text-gray-500 uppercase tracking-widest truncate w-full text-center px-2 opacity-50 group-hover:opacity-100 transition-opacity">
                     {moment.Type.replace("MOMENT_", "").replace(/_/g, " ")}

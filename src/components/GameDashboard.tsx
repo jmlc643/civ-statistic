@@ -2,6 +2,10 @@ import { useState } from "react"
 import { CivTimeline } from "./CivTimeline"
 import type { CivGameData } from "../types/civ"
 
+import { DashboardHeader } from "./dashboard/DashboardHeader"
+import { DashboardStats } from "./dashboard/DashboardStats"
+import { DashboardOpponents } from "./dashboard/DashboardOpponents"
+
 interface Props {
     data: CivGameData
 }
@@ -20,7 +24,6 @@ export const GameDashboard = ({ data }: Props) => {
     
     const totalTurns = data.Moments.length > 0 ? data.Moments[data.Moments.length - 1].Turn : 0;
     
-    // Calculate total Era Score specifically for the active player!
     const activePlayerMoments = data.Moments.filter(m => m.ActingPlayer === activePlayerId)
     const totalEraScore = activePlayerMoments.reduce((acc, moment) => acc + moment.EraScore, 0)
     
@@ -33,18 +36,7 @@ export const GameDashboard = ({ data }: Props) => {
 
     return (
     <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-6 text-white shadow-xl max-w-6xl mx-auto">
-      <div className="flex items-center gap-4 border-b border-gray-800 pb-4 mb-6">
-        <img
-          src={`/assets/leaders/${humanPlayer.LeaderName}.webp`}
-          alt={humanPlayer.LeaderName}
-          className="w-20 h-20 object-cover rounded-full border-2 border-amber-500 bg-gray-800"
-          onError={(e) => { e.currentTarget.src = "https://via.placeholder.com/80?text=?"; }}
-        />
-        <div>
-          <h2 className="text-2xl font-bold text-gray-100">Partida de: {humanPlayer.LeaderName}</h2>
-          <p className="text-gray-400">{humanPlayer.CivilizationShortDescription}</p>
-        </div>
-      </div>
+      <DashboardHeader humanPlayer={humanPlayer} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-gray-800 rounded-lg p-4 text-center">
@@ -60,6 +52,11 @@ export const GameDashboard = ({ data }: Props) => {
           <div className="text-3xl font-bold text-amber-500">{data.Players.length}</div>
         </div>
       </div>
+
+      <DashboardStats 
+        activePlayer={activePlayer} 
+        activePlayerMoments={activePlayerMoments} 
+      />
 
       <div className="flex justify-between items-center mb-6">
         <button
@@ -80,27 +77,11 @@ export const GameDashboard = ({ data }: Props) => {
       </div>
 
       {showLeaders && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
-          {opponents.map(opp => (
-            <div
-              key={opp.Id} 
-              onClick={() => setSelectedPlayerId(opp.Id)}
-              className={`text-center bg-gray-800 p-4 rounded-xl cursor-pointer transition-all ${activePlayerId === opp.Id ? "ring-2 ring-amber-500 transform scale-105" : "hover:bg-gray-700"}`}
-            >
-              <img
-                src={`/assets/leaders/${opp.LeaderName}.webp`}
-                alt={opp.LeaderName}
-                className="w-16 h-16 object-cover rounded-full mx-auto mb-3 bg-gray-900 shadow-inner"
-                onError={(e) => { e.currentTarget.src = "https://via.placeholder.com/80?text=?"; }}
-              />
-              <div className="font-semibold text-sm truncate" title={opp.LeaderName}>{opp.LeaderName}</div>
-              <div className="text-xs text-gray-400 truncate" title={opp.CivilizationShortDescription}>{opp.CivilizationShortDescription}</div>
-              <div className="mt-2">
-                <button className="text-xs bg-gray-900 border border-gray-700 px-2 py-1 rounded text-gray-300">Ver eventos</button>
-              </div>
-            </div>
-          ))}
-        </div>
+        <DashboardOpponents 
+          opponents={opponents} 
+          activePlayerId={activePlayerId} 
+          setSelectedPlayerId={setSelectedPlayerId} 
+        />
       )}
 
       <div className="mt-8 border-t border-gray-800 pt-8">
